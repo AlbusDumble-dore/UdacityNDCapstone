@@ -72,12 +72,7 @@ jobs:
       - run:
           name: Ensure EKS network exists
           command: |
-            aws cloudformation deploy \
-            --stack-name "${ENVIRONMENT_NAME}-eks-nodegroup" \
-            --template-file cloudformation/network.yml \
-            --tags project=${ENVIRONMENT_NAME}-project \
-            --region us-east-1 \
-            --parameter-overrides file://cloudformation/network-parameters.json
+            aws cloudformation deploy --stack-name "${ENVIRONMENT_NAME}-eks-nodegroup" --template-file cloudformation/network.yml --tags project=${ENVIRONMENT_NAME}-project --region us-east-1 --parameter-overrides file://cloudformation/network-parameters.json
       - run:
           name: Ensure EKS Cluster exists
           command: |
