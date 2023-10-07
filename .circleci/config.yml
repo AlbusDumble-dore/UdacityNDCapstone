@@ -36,7 +36,7 @@ jobs:
 
   upload-docker:
     docker:
-      - image: amazon/aws-cli
+      - image: circleci/golang:1.15
 
     working_directory: ~/repo
 
@@ -49,16 +49,17 @@ jobs:
       - run:
           name: Build docker container
           command: |
-            docker build -t mk-capstone-ecr-repo .
+            docker build -t mk-capstone-dockerhub-repo .
             docker image ls
 
       - run:
           name: Upload Docker to Dockerhub
           command: |
             echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 112462442859.dkr.ecr.us-east-1.amazonaws.com
-            docker tag mk-capstone-ecr-repo:latest 112462442859.dkr.ecr.us-east-1.amazonaws.com/mk-capstone-ecr-repo:latest
-            docker push 112462442859.dkr.ecr.us-east-1.amazonaws.com/mk-capstone-ecr-repo:latest
+            docker login -u="mukulkmr" -p="DockerHubPass*1"
+            docker tag mk-capstone-dockerhub-repo mukulkmr/mk-capstone-dockerhub-repo:$CIRCLE_WORKFLOW_ID
+            docker push mukulkmr/mk-capstone-dockerhub-repo:$CIRCLE_WORKFLOW_ID
+
 
   deploy-infrastructure:
     docker:
