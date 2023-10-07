@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: capstone-project-app
-          image: mukulkmr/capstone-project
+          image: mukulkmr/mk-capstone-dockerhub-repo
           ports:
             - containerPort: 80
