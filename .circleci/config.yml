@@ -49,16 +49,16 @@ jobs:
       - run:
           name: Build docker container
           command: |
-            docker build --tag=$DOCKER_IMAGE_NAME .
+            docker build -t mk-capstone-ecr-repo .
             docker image ls
 
       - run:
           name: Upload Docker to Dockerhub
           command: |
             echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
-            docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-            docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
-            docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:$CIRCLE_WORKFLOW_ID
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 112462442859.dkr.ecr.us-east-1.amazonaws.com
+            docker tag mk-capstone-ecr-repo:latest 112462442859.dkr.ecr.us-east-1.amazonaws.com/mk-capstone-ecr-repo:latest
+            docker push 112462442859.dkr.ecr.us-east-1.amazonaws.com/mk-capstone-ecr-repo:latest
 
   deploy-infrastructure:
     docker:
@@ -228,10 +228,10 @@ workflows:
   default:
     jobs:
       - test-build
-    #  - upload-docker:
-     #     requires:
-      #      - test-build
-       #   filters:
+      - upload-docker:
+          requires:
+            - test-build
+        #  filters:
         #    branches:
          #     only: [ master ]
 #      - deploy-infrastructure:
