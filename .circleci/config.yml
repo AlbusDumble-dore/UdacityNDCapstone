@@ -76,7 +76,6 @@ jobs:
               --stack-name "${ENVIRONMENT_NAME}-eks-nodegroup" \
               --template-file cloudformation/network.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
-    #          --stack-name "${ENVIRONMENT_NAME}-eks-network" \
               --region us-east-1 \
               --parameter-overrides file://cloudformation/network-parameters.json
       - run:
