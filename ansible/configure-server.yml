@@ -4,8 +4,8 @@
   user: ubuntu
   gather_facts: false
   become: yes
-  pre_tasks:
-    - name: "Install 'unzip'"
+ # pre_tasks:
+ #   - name: "Install 'unzip'"
  #     raw: sudo apt-get install unzip
 
   roles:
