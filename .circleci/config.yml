@@ -137,22 +137,22 @@ jobs:
             - "5f:b9:ca:4f:d4:45:0c:f0:77:fb:f8:63:b4:cd:3e:ed"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-      - run:
-          name: Configure server
-          command: |
-            if grep -q "No changes to deploy" ~/checkIfDeployed.txt
-              then
-                cat ~/inventory.txt
-                echo "Our management instances are already configured."
-              else
-                cat ~/inventory.txt
-                cd ansible
-                ansible-playbook -i ~/inventory.txt configure-server.yml
-              fi
+ #     - run:
+  #        name: Install dependencies
+   #       command: |
+    #        apk add --update ansible
+     # - run:
+      #    name: Configure server
+       #   command: |
+        #    if grep -q "No changes to deploy" ~/checkIfDeployed.txt
+         #     then
+          #      cat ~/inventory.txt
+           #     echo "Our management instances are already configured."
+            #  else
+             #   cat ~/inventory.txt
+              #  cd ansible
+               # ansible-playbook -i ~/inventory.txt configure-server.yml
+           #   fi
 
   configure-cluster:
     docker:
@@ -164,45 +164,45 @@ jobs:
             - "d4:2f:91:66:b5:0d:84:24:4a:09:2c:d6:8a:c1:0f:91"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-      - run:
-          name: Configure server
-          command: |
-            if grep -q "No changes to deploy" ~/checkIfDeployed.txt
-              then
-                cat ~/inventory.txt
-                echo "Our management instances are already configured."
-              else
-                cat ~/inventory.txt
-                cd ansible
-                ansible-playbook -i ~/inventory.txt configure-cluster.yml
-              fi
-      - run:
-          name: Wait for LoadBalancer's domain to become reachable
-          command: |
-            if grep -q "No changes to deploy" ~/checkIfDeployed.txt
-              then
-                cat ~/inventory.txt
-                echo "Our management instances are already configured."
-              else
-                cat ~/inventory.txt
-                echo "Wait 60 seconds..."
-                sleep 60
-              fi
-      - run:
-          name: Display the LoadBalancer's DNS name
-          command: |
-            cat ~/inventory.txt
-            cd ansible
-            ansible-playbook -i ~/inventory.txt save-elb-dns-url.yml
-            cat ~/elb_dns.txt
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - elb_dns.txt
+#      - run:
+ #         name: Install dependencies
+  #        command: |
+   #         apk add --update ansible
+    #  - run:
+     #     name: Configure server
+      #    command: |
+       #     if grep -q "No changes to deploy" ~/checkIfDeployed.txt
+        #      then
+         #       cat ~/inventory.txt
+          #      echo "Our management instances are already configured."
+           #   else
+            #    cat ~/inventory.txt
+             #   cd ansible
+              #  ansible-playbook -i ~/inventory.txt configure-cluster.yml
+ #             fi
+  #    - run:
+   #       name: Wait for LoadBalancer's domain to become reachable
+    #      command: |
+     #       if grep -q "No changes to deploy" ~/checkIfDeployed.txt
+      #        then
+       #         cat ~/inventory.txt
+        #        echo "Our management instances are already configured."
+         #     else
+          #      cat ~/inventory.txt
+           #     echo "Wait 60 seconds..."
+            #    sleep 60
+            #  fi
+#      - run:
+ #         name: Display the LoadBalancer's DNS name
+  #        command: |
+   #         cat ~/inventory.txt
+    #        cd ansible
+     #       ansible-playbook -i ~/inventory.txt save-elb-dns-url.yml
+      #      cat ~/elb_dns.txt
+#      - persist_to_workspace:
+ #         root: ~/
+  #        paths:
+   #         - elb_dns.txt
 
   deploy-docker:
     docker:
@@ -214,17 +214,17 @@ jobs:
             - "d4:2f:91:66:b5:0d:84:24:4a:09:2c:d6:8a:c1:0f:91"
       - attach_workspace:
           at: ~/
-      - run:
-          name: Install dependencies
-          command: |
-            apk add --update ansible
-      - run:
-          name: Deploy newest Docker Image
-          command: |
-            cat ~/inventory.txt
-            cd ansible
-            ansible-playbook -i ~/inventory.txt deploy-application.yml
-          no_output_timeout: 2m
+ #     - run:
+  #        name: Install dependencies
+   #       command: |
+    #        apk add --update ansible
+ #     - run:
+  #        name: Deploy newest Docker Image
+   #       command: |
+    #        cat ~/inventory.txt
+     #       cd ansible
+      #      ansible-playbook -i ~/inventory.txt deploy-application.yml
+       #   no_output_timeout: 2m
 
 workflows:
   default:
