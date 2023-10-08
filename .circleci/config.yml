@@ -241,8 +241,8 @@ workflows:
         #    branches:
          #     only: [ master ]
       - configure-infrastructure:
-          requires:
-            - deploy-infrastructure
+   #       requires:
+  #          - deploy-infrastructure
       - configure-cluster:
           requires:
             - configure-infrastructure
