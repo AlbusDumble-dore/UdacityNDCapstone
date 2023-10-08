@@ -6,7 +6,7 @@
   become: yes
   pre_tasks:
     - name: "Install 'unzip'"
-      raw: sudo apt-get install unzip
+ #     raw: sudo apt-get install unzip
 
   roles:
     - install-awscli
