@@ -73,7 +73,7 @@ jobs:
           name: Ensure EKS network exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/create-network.yml \
+              --template-file cloudformation_scripts/create-network.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-network \
               --region us-east-1 \
@@ -83,7 +83,7 @@ jobs:
           name: Ensure EKS Cluster exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/create-cluster.yml \
+              --template-file cloudformation_scripts/create-cluster.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-cluster \
               --region us-east-1 \
@@ -94,7 +94,7 @@ jobs:
           name: Ensure Nodegroup exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/create-nodegroup.yml \
+              --template-file cloudformation_scripts/create-nodegroup.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-nodegroup \
               --region us-east-1 \
@@ -104,7 +104,7 @@ jobs:
           name: Ensure management instances exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/create-management-nodes.yml \
+              --template-file cloudformation_scripts/create-management-nodes.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-management \
               --region us-east-1 \
