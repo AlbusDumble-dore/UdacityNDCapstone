@@ -73,42 +73,42 @@ jobs:
           name: Ensure EKS network exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/network.yml \
+              --template-file cloudformation/create-network.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-network \
               --region us-east-1 \
-              --parameter-overrides file://cloudformation/network-parameters.json
+              --parameter-overrides file://cloudformation_scripts/network-parameters.json
 
       - run:
           name: Ensure EKS Cluster exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/cluster.yml \
+              --template-file cloudformation/create-cluster.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-cluster \
               --region us-east-1 \
-              --parameter-overrides file://cloudformation/cluster-parameters.json \
+              --parameter-overrides file://cloudformation_scripts/cluster-parameters.json \
               --capabilities CAPABILITY_NAMED_IAM
           no_output_timeout: 15m
       - run:
           name: Ensure Nodegroup exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/nodegroup.yml \
+              --template-file cloudformation/create-nodegroup.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-nodegroup \
               --region us-east-1 \
-              --parameter-overrides file://cloudformation/nodegroup-parameters.json \
+              --parameter-overrides file://cloudformation_scripts/nodegroup-parameters.json \
               --capabilities CAPABILITY_NAMED_IAM
       - run:
           name: Ensure management instances exists
           command: |
             aws cloudformation deploy \
-              --template-file cloudformation/management.yml \
+              --template-file cloudformation/create-management-nodes.yml \
               --tags project=${ENVIRONMENT_NAME}-project \
               --stack-name capstone-project-eks-management \
               --region us-east-1 \
-              --parameter-overrides file://cloudformation/management-parameters.json \
+              --parameter-overrides file://cloudformation_scripts/management-parameters.json \
               --output text >> ~/checkIfDeployed.txt
             cat ~/checkIfDeployed.txt
       - run:
@@ -197,7 +197,7 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
-            ansible-playbook -i ~/inventory.txt save-elb-dns.yml
+            ansible-playbook -i ~/inventory.txt save-elb-dns-url.yml
             cat ~/elb_dns.txt
       - persist_to_workspace:
           root: ~/
@@ -223,7 +223,7 @@ jobs:
           command: |
             cat ~/inventory.txt
             cd ansible
-            ansible-playbook -i ~/inventory.txt deploy-app.yml
+            ansible-playbook -i ~/inventory.txt deploy-application.yml
           no_output_timeout: 2m
 
 workflows:
@@ -233,13 +233,7 @@ workflows:
       - upload-docker:
           requires:
             - test-build
-        #  filters:
-        #    branches:
-         #     only: [ master ]
       - deploy-infrastructure
-       #   filters:
-        #    branches:
-         #     only: [ master ]
       - configure-infrastructure:
           requires:
             - deploy-infrastructure
